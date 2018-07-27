@@ -75,5 +75,5 @@ class BrickSetSpider(scrapy.Spider):
         filename = "out{}.html".format(random.randint(10000, 100000))
         soup = BeautifulSoup(results_table, 'html.parser')
 
-        with open(os.path.join('data/subjects', filename), "w") as f:
+        with open(os.path.join('data/courselink-results', filename), "w") as f:
             f.write(soup.prettify())
