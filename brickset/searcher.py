@@ -1,8 +1,6 @@
 import json
-import requests
-from details import genDetails
+from details import SearchPage, EvalsPage, DetailsPage
 
-url = "https://courses.yale.edu/api/?page=fose&route=search"
 headers = {
     'cookie':
     '_ga=GA1.2.695127647.1530509150; __cfduid=debcc9a14d002cfa00ab8644eba09984d1532318489',
@@ -24,42 +22,32 @@ headers = {
     'courses.yale.edu'
 }
 
-# a sample query might look like this {
-#     'subject': 'USAF',
-#     'keyword': 'spectral',
-#     'instructor': 'foo',
-#     'col': 'DI',
-#     'overlap': '2344',
-#     'schedule_type_G': 'Y',
-# }
+search = SearchPage()
+details = DetailsPage()
+evaluations = EvalsPage()
 
 
-def genPayload(query):
-    criteria = []
-    for key, value in query.items():
-        criteria.append({"field": key, "value": value})
-    payload = json.dumps({'other': {'srcdb': '201803'}, 'criteria': criteria})
-    # print('payload:', payload)
-    return payload
+def foo(obj, keys):
+    for k in keys:
+        if k in obj:
+            print(k, obj[k])
+        else:
+            print(k, "[]")
 
 
-def process(response):
-    t = json.loads(response.text)
-    if 'results' in t:
-        for i, r in enumerate(t['results']):
-            print(i, json.dumps(r))
-            print()
+t = search.get({'subject':'afst'})
+if 'results' in t:
+    for class_result in t['results']:
+        # foo(class_result, ['code', 'crn', 'title'])
+        print(json.dumps(class_result, indent=2, sort_keys=True))
 
-        # gen the details of the first result
-        print(genDetails(t['results'][0]))
+        deets = details.get(class_result)
+        print(json.dumps(deets, indent=2, sort_keys=True))
 
-    else:
-        print(t)
+        # foo(deets, ['description'])
 
-payload = genPayload({'subject': 'AFST'})
-r = requests.post(url, data=payload, headers=headers)
-print(r.elapsed)
-print(r.ok)
-print('Here are your results:')
-
-process(r)
+        evals = evaluations.get(class_result['crn'])
+        if 'course' in evals:
+            print(json.dumps(evals, indent=2, sort_keys=True))
+            # foo(evals['course'], ['eval_questions'])
+            # foo(evals['course'], ['narrative_questions'])
