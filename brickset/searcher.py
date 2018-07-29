@@ -1,27 +1,6 @@
 import json
 from details import SearchPage, EvalsPage, DetailsPage
 
-headers = {
-    'cookie':
-    '_ga=GA1.2.695127647.1530509150; __cfduid=debcc9a14d002cfa00ab8644eba09984d1532318489',
-    'origin':
-    'https://courses.yale.edu',
-    'accept-encoding':
-    'gzip,',
-    'accept-language':
-    'en-US,en;q=0.9',
-    'user-agent':
-    'Mozilla/5.0',
-    'content-type':
-    'application/json',
-    'accept':
-    'application/json,',
-    'referer':
-    'https://courses.yale.edu/',
-    'authority':
-    'courses.yale.edu'
-}
-
 search = SearchPage()
 details = DetailsPage()
 evaluations = EvalsPage()
