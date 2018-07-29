@@ -1,30 +1,28 @@
-import json
-from details import SearchPage, EvalsPage, DetailsPage
+"""
+Gets the list of all Yale college classes from the search page
+"""
+import csv
+from details import SearchPage
 
 search = SearchPage()
-details = DetailsPage()
-evaluations = EvalsPage()
 
 
-def foo(obj, keys):
-    for k in keys:
-        if k in obj:
-            print(k, ':', obj[k])
+def getAllYaleCollegeClasses():
+    t = search.get({'col': 'YC'})
+    if 'results' in t:
+        for result in t['results']:
+            yield result
 
 
-t = search.get({'subject': 'afst'})
-if 'results' in t:
-    for class_result in t['results']:
-        # foo(class_result, ['code', 'crn', 'title'])
-        print(json.dumps(class_result, indent=2, sort_keys=True))
+with open("all.csv", 'w') as f:
+    output = csv.writer(f)
 
-        deets = details.get(class_result)
-        print(json.dumps(deets, indent=2, sort_keys=True))
+    first = True
+    for t in getAllYaleCollegeClasses():
+        if first:
+            print(t.keys())
+            output.writerow(t.keys())
+            first = False
 
-        # foo(deets, ['description'])
-
-        evals = evaluations.get(class_result['crn'])
-        if 'course' in evals:
-            print(json.dumps(evals, indent=2, sort_keys=True))
-            # foo(evals['course'], ['eval_questions'])
-            # foo(evals['course'], ['narrative_questions'])
+        print(t.values())
+        output.writerow(t.values())
