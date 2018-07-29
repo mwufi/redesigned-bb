@@ -30,12 +30,10 @@ evaluations = EvalsPage()
 def foo(obj, keys):
     for k in keys:
         if k in obj:
-            print(k, obj[k])
-        else:
-            print(k, "[]")
+            print(k, ':', obj[k])
 
 
-t = search.get({'subject':'afst'})
+t = search.get({'subject': 'afst'})
 if 'results' in t:
     for class_result in t['results']:
         # foo(class_result, ['code', 'crn', 'title'])
