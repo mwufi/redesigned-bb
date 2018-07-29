@@ -47,8 +47,8 @@ class ProgressBar:
 
         arrow = "=" * int(ratio * self.width) + "=>"
         self.i += 1
-        if self.i % 10 == 0:
-            print(arrow + "{} eta: {}".format(self.i, eta))
+        if self.i % 5== 0:
+            print(arrow + "{} {:2f} eta: {:2f}".format(ratio, elapsed, eta))
 
 
 U = ProgressBar(3700)
