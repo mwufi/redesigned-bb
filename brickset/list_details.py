@@ -3,17 +3,12 @@ Gets the details pages for all the courses
 """
 import csv
 from details import SearchPage, DetailsPage
-import time
+from list_classes import getAllYaleCollegeClasses
+from progressbar import ProgressBar
+
 
 search = SearchPage()
 details = DetailsPage()
-
-
-def getAllYaleCollegeClasses():
-    t = search.get({'col': 'YC'})
-    if 'results' in t:
-        for result in t['results']:
-            yield result
 
 
 def getDetails(class_result):
@@ -27,28 +22,6 @@ def getDetails(class_result):
         deets['resources'] = ""
 
     return deets
-
-
-class ProgressBar:
-    def __init__(self, total):
-        self.width = 50
-        self.total = total
-
-        self.start()
-
-    def start(self):
-        self.start = time.time()
-        self.i = 0
-
-    def update(self, number):
-        ratio = int(number) / self.total
-        elapsed = time.time() - self.start
-        eta = elapsed / ratio
-
-        arrow = "=" * int(ratio * self.width) + "=>"
-        self.i += 1
-        if self.i % 5== 0:
-            print(arrow + "{} {:2f} eta: {:2f}".format(ratio, elapsed, eta))
 
 
 U = ProgressBar(3700)
